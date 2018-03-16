@@ -1,0 +1,33 @@
+---
+  title: "Something fascinating"
+  author: "Daria"
+  date: "`r format(Sys.Date())`"
+  output: github_document
+---
+
+
+# Some title
+
+## One more title
+
+Text
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+2+2
+
+```
+
+
+The plot
+
+```{r}
+
+hist(sample(1:10,10))
+```
