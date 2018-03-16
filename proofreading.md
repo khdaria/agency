@@ -76,7 +76,9 @@ flea %>% group_by(outcome) %>% summarise(M = mean(prediction_E),
 </table>
 
 ``` r
-etasq(lm(prediction_E ~ predict*outcome, data=flea), anova = T,type=3) %>% pandoc.table(round = 3, missing = "")
+options(contrasts = c('contr.sum','contr.poly'))
+
+etasq(lm(prediction_E ~ predict*outcome, data=flea), anova = T,type="III") %>% pandoc.table(round = 3, missing = "")
 ```
 
 <table>
@@ -101,27 +103,27 @@ etasq(lm(prediction_E ~ predict*outcome, data=flea), anova = T,type=3) %>% pando
 <tbody>
 <tr class="odd">
 <td align="center"><strong>(Intercept)</strong></td>
-<td align="center">0.405</td>
-<td align="center">38694</td>
+<td align="center">0.759</td>
+<td align="center">179540</td>
 <td align="center">1</td>
-<td align="center">64.63</td>
+<td align="center">299.9</td>
 <td align="center">0</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>predict</strong></td>
-<td align="center">0.191</td>
-<td align="center">13385</td>
+<td align="center">0.274</td>
+<td align="center">21514</td>
 <td align="center">1</td>
-<td align="center">22.36</td>
+<td align="center">35.94</td>
 <td align="center">0</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>outcome</strong></td>
-<td align="center">0.015</td>
-<td align="center">867.7</td>
+<td align="center">0.067</td>
+<td align="center">4106</td>
 <td align="center">1</td>
-<td align="center">1.449</td>
-<td align="center">0.232</td>
+<td align="center">6.858</td>
+<td align="center">0.01</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>predict:outcome</strong></td>
@@ -151,10 +153,11 @@ group_by(flea, outcome, predict) %>%
   geom_errorbar(aes(ymin=prediction_E-se, ymax=prediction_E+se), width=.1,
                 position = position_dodge(.1)) +
   scale_color_brewer(palette = "Set2") + 
-  geom_line(aes(group = predict), position = position_dodge(.1))
+  geom_line(aes(group = predict), position = position_dodge(.1)) +
+  ylab("Did you expect the other's emotional response?")
 ```
 
-![](test_files/figure-markdown_github/unnamed-chunk-1-1.png)
+![](proofreading_files/figure-markdown_github/unnamed-chunk-1-1.png)
 
 Agency
 ------
@@ -251,27 +254,27 @@ etasq(lm(causat ~ predict*outcome, data=flea), anova = T,type=3) %>% pandoc.tabl
 <tbody>
 <tr class="odd">
 <td align="center"><strong>(Intercept)</strong></td>
-<td align="center">0.569</td>
-<td align="center">65660</td>
+<td align="center">0.84</td>
+<td align="center">260237</td>
 <td align="center">1</td>
-<td align="center">125.6</td>
+<td align="center">497.7</td>
 <td align="center">0</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>predict</strong></td>
-<td align="center">0.008</td>
-<td align="center">420</td>
+<td align="center">0.042</td>
+<td align="center">2164</td>
 <td align="center">1</td>
-<td align="center">0.803</td>
-<td align="center">0.372</td>
+<td align="center">4.138</td>
+<td align="center">0.045</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>outcome</strong></td>
-<td align="center">0.027</td>
-<td align="center">1396</td>
+<td align="center">0.083</td>
+<td align="center">4481</td>
 <td align="center">1</td>
-<td align="center">2.67</td>
-<td align="center">0.106</td>
+<td align="center">8.569</td>
+<td align="center">0.004</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>predict:outcome</strong></td>
@@ -301,7 +304,8 @@ group_by(flea, outcome, predict) %>%
   geom_errorbar(aes(ymin=causat-se, ymax=causat+se), width=.1,
                 position = position_dodge(.1)) +
   scale_color_brewer(palette = "Set2") + 
-  geom_line(aes(group = predict), position = position_dodge(.1))
+  geom_line(aes(group = predict), position = position_dodge(.1)) +
+  ylab("Did it feel like you caused an emotional response?")
 ```
 
-![](test_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](proofreading_files/figure-markdown_github/unnamed-chunk-2-1.png)

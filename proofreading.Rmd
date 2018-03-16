@@ -11,7 +11,7 @@
 ## Manipulation check
 
 ```{r setup, include=FALSE, echo=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
 library(tidyverse)
 library(pander)
 library(car)
@@ -25,7 +25,7 @@ flea <- foreign::read.spss("C:/Users/Daria/Downloads/fleamarketresults.sav", to.
 
 
 
-```{r warning=F, message=F, results = "asis",cache=F}
+```{r warning=F, message=F, results = "asis",cache=F,dpi=300}
 
 flea %>% group_by(predict) %>% summarise(M = mean(prediction_E),
                                          SD = sd(prediction_E)) %>%
@@ -35,9 +35,9 @@ flea %>% group_by(outcome) %>% summarise(M = mean(prediction_E),
                                          SD = sd(prediction_E)) %>%
   as.data.frame() %>% pandoc.table(round = 3)
 
+options(contrasts = c('contr.sum','contr.poly'))
 
-
-etasq(lm(prediction_E ~ predict*outcome, data=flea), anova = T,type=3) %>% pandoc.table(round = 3, missing = "")
+etasq(lm(prediction_E ~ predict*outcome, data=flea), anova = T,type="III") %>% pandoc.table(round = 3, missing = "")
 
 group_by(flea, outcome, predict) %>% 
   summarise(se = sd(prediction_E)/sqrt(length(prediction_E)),
@@ -47,13 +47,14 @@ group_by(flea, outcome, predict) %>%
   geom_errorbar(aes(ymin=prediction_E-se, ymax=prediction_E+se), width=.1,
                 position = position_dodge(.1)) +
   scale_color_brewer(palette = "Set2") + 
-  geom_line(aes(group = predict), position = position_dodge(.1))
+  geom_line(aes(group = predict), position = position_dodge(.1)) +
+  ylab("Did you expect the other's emotional response?")
 
 ```
 
 ## Agency
 
-```{r warning=F, message=F, results = "asis", cache=F}
+```{r warning=F, message=F, results = "asis", cache=F,dpi=300}
 
 flea %>% group_by(predict) %>% summarise(M = mean(causat),
                                          SD = sd(causat)) %>%
@@ -76,7 +77,8 @@ group_by(flea, outcome, predict) %>%
   geom_errorbar(aes(ymin=causat-se, ymax=causat+se), width=.1,
                 position = position_dodge(.1)) +
   scale_color_brewer(palette = "Set2") + 
-  geom_line(aes(group = predict), position = position_dodge(.1))
+  geom_line(aes(group = predict), position = position_dodge(.1)) +
+  ylab("Did it feel like you caused an emotional response?")
 
 ```
 
