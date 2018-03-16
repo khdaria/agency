@@ -11,8 +11,13 @@ output: html_document
 
 Text
 
-```{r results='asis'}
 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
 2+2
-
 ```
