@@ -11,7 +11,7 @@ output: html_document
 
 Text
 
-```{r}
+```{r results='asis'}
 
 2+2
 
