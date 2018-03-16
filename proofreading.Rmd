@@ -1,12 +1,9 @@
 ---
-  title: "Something fascinating"
-  author: "Daria"
+  title: "The Many Faces of Agency"
+  author: "Daria Kharkina"
   date: "`r format(Sys.Date())`"
   output: github_document
 ---
-
-
-# Some title
 
 ## Manipulation check
 
@@ -79,6 +76,102 @@ group_by(flea, outcome, predict) %>%
   scale_color_brewer(palette = "Set2") + 
   geom_line(aes(group = predict), position = position_dodge(.1)) +
   ylab("Did it feel like you caused an emotional response?")
+
+```
+
+
+
+
+## Responsibility
+
+```{r warning=F, message=F, results = "asis", cache=F,dpi=300}
+
+flea %>% group_by(predict) %>% summarise(M = mean(responsibility_E),
+                                         SD = sd(responsibility_E)) %>%
+  as.data.frame() %>% pandoc.table(round = 3)
+
+flea %>% group_by(outcome) %>% summarise(M = mean(responsibility_E),
+                                         SD = sd(responsibility_E)) %>%
+  as.data.frame() %>% pandoc.table(round = 3)
+
+
+
+etasq(lm(responsibility_E ~ predict*outcome, data=flea), anova = T,type=3) %>% pandoc.table(round = 3, missing = "")
+
+
+group_by(flea, outcome, predict) %>% 
+  summarise(se = sd(responsibility_E)/sqrt(length(responsibility_E)),
+            sd = sd(responsibility_E), responsibility_E = mean(responsibility_E)) %>%
+  ggplot(aes(outcome, responsibility_E, color = predict)) + 
+  geom_point(position = position_dodge(.1)) +
+  geom_errorbar(aes(ymin=responsibility_E-se, ymax=responsibility_E+se), width=.1,
+                position = position_dodge(.1)) +
+  scale_color_brewer(palette = "Set2") + 
+  geom_line(aes(group = predict), position = position_dodge(.1)) +
+  ylab("Do you feel responsible for the other's emotions?")
+
+```
+
+
+## Mood
+
+```{r warning=F, message=F, results = "asis", cache=F,dpi=300}
+
+flea %>% group_by(predict) %>% summarise(M = mean(feeling),
+                                         SD = sd(feeling)) %>%
+  as.data.frame() %>% pandoc.table(round = 3)
+
+flea %>% group_by(outcome) %>% summarise(M = mean(feeling),
+                                         SD = sd(feeling)) %>%
+  as.data.frame() %>% pandoc.table(round = 3)
+
+
+
+etasq(lm(feeling ~ predict*outcome, data=flea), anova = T,type=3) %>% pandoc.table(round = 3, missing = "")
+
+
+group_by(flea, outcome, predict) %>% 
+  summarise(se = sd(feeling)/sqrt(length(feeling)),
+            sd = sd(feeling), feeling = mean(feeling)) %>%
+  ggplot(aes(outcome, feeling, color = predict)) + 
+  geom_point(position = position_dodge(.1)) +
+  geom_errorbar(aes(ymin=feeling-se, ymax=feeling+se), width=.1,
+                position = position_dodge(.1)) +
+  scale_color_brewer(palette = "Set2") + 
+  geom_line(aes(group = predict), position = position_dodge(.1)) +
+  ylab("Do you feel responsible for the other's emotions?")
+
+```
+
+
+
+## Buying behavior
+
+```{r warning=F, message=F, results = "asis", cache=F,dpi=300}
+
+flea %>% group_by(predict) %>% summarise(M = mean(buy),
+                                         SD = sd(buy)) %>%
+  as.data.frame() %>% pandoc.table(round = 3)
+
+flea %>% group_by(outcome) %>% summarise(M = mean(buy),
+                                         SD = sd(buy)) %>%
+  as.data.frame() %>% pandoc.table(round = 3)
+
+
+
+etasq(lm(buy ~ predict*outcome, data=flea), anova = T,type=3) %>% pandoc.table(round = 3, missing = "")
+
+
+group_by(flea, outcome, predict) %>% 
+  summarise(se = sd(buy)/sqrt(length(buy)),
+            sd = sd(buy), buy = mean(buy)) %>%
+  ggplot(aes(outcome, buy, color = predict)) + 
+  geom_point(position = position_dodge(.1)) +
+  geom_errorbar(aes(ymin=buy-se, ymax=buy+se), width=.1,
+                position = position_dodge(.1)) +
+  scale_color_brewer(palette = "Set2") + 
+  geom_line(aes(group = predict), position = position_dodge(.1)) +
+  ylab("Do you buy again from this person?")
 
 ```
 
